@@ -6,6 +6,7 @@ import time
 import copy
 import logging
 import random
+import pypushdeer
 
 import smtplib
 from email.mime.text import MIMEText
@@ -36,6 +37,7 @@ SIGN_DATA = {
 # VARIABLE NAME
 COOKIE = "Cookie"
 BDUSS = "BDUSS"
+PUSHKEY = "PUSHKEY"
 EQUAL = r'='
 EMPTY_STR = r''
 TBS = 'tbs'
@@ -51,6 +53,14 @@ KW = "kw"
 
 s = requests.Session()
 
+def send_pusher(key,result):
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.63 Safari/537.36'}
+    urltxt = "https://api2.pushdeer.com/message/push?pushkey={}&text={}".format(key,result)
+    #print(urltxt)
+    page = requests.get(url=urltxt, headers=headers)
+    return "send_pusher操作结束"
+    
 
 def get_tbs(bduss):
     logger.info("获取tbs开始")
@@ -224,7 +234,7 @@ def main():
             time.sleep(random.randint(1,5))
             client_sign(i, tbs, j["id"], j["name"])
         logger.info("完成第" + str(n) + "个用户签到")
-    send_email(favorites)
+    send_pusher(PUSHKEY,favorites)
     logger.info("所有用户签到结束")
 
 
