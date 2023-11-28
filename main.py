@@ -222,6 +222,7 @@ def main():
         logger.error("未配置BDUSS")
         return
     b = ENV['BDUSS'].split('#')
+    pushkey = ENV['PUSHKEY']
     for n, i in enumerate(b):
         logger.info("开始签到第" + str(n) + "个用户" + i)
         tbs = get_tbs(i)
@@ -230,7 +231,7 @@ def main():
             time.sleep(random.randint(1,5))
             client_sign(i, tbs, j["id"], j["name"])
         logger.info("完成第" + str(n) + "个用户签到")
-    send_pusher(ENV['PUSHKEY'],"所有用户签到完成")
+    send_pusher(pushkey,"所有用户签到完成")
     logger.info("所有用户签到结束")
 
 
