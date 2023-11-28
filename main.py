@@ -6,7 +6,7 @@ import time
 import copy
 import logging
 import random
-import pypushdeer
+from pypushdeer import PushDeer
 
 import smtplib
 from email.mime.text import MIMEText
@@ -53,14 +53,10 @@ KW = "kw"
 
 s = requests.Session()
 
-def send_pusher(key,result):
-    headers = {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.63 Safari/537.36'}
-    urltxt = "https://api2.pushdeer.com/message/push?pushkey={}&text={}".format(key,result)
-    #print(urltxt)
-    page = requests.get(url=urltxt, headers=headers)
-    return "send_pusher操作结束"
-    
+def send_pusher(key, result):
+    pushdeer = PushDeer(pushkey=key)
+    pushdeer.send_text("贴吧签到", desp=result)
+    return "成功"
 
 def get_tbs(bduss):
     logger.info("获取tbs开始")
