@@ -9,7 +9,6 @@ import random
 from pypushdeer import PushDeer
 
 import smtplib
-from email.mime.text import MIMEText
 
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -52,10 +51,6 @@ SIGN = "sign"
 KW = "kw"
 
 s = requests.Session()
-
-def send_pusher(key, result):
-    pushdeer = PushDeer(pushkey=key)
-    pushdeer.send_text("贴吧签到", desp=result)
 
 def get_tbs(bduss):
     logger.info("获取tbs开始")
@@ -178,61 +173,30 @@ def client_sign(bduss, tbs, fid, kw):
     res = s.post(url=SIGN_URL, data=data, timeout=5).json()
     return res
 
-def send_email(sign_list):
-    if ('HOST' not in ENV or 'FROM' not in ENV or 'TO' not in ENV or 'AUTH' not in ENV):
-        logger.error("未配置邮箱")
-        return
-    HOST = ENV['HOST']
-    FROM = ENV['FROM']
-    TO = ENV['TO'].split('#')
-    AUTH = ENV['AUTH']
-    length = len(sign_list)
-    subject = f"{time.strftime('%Y-%m-%d', time.localtime())} 签到{length}个贴吧"
-    body = """
-    <style>
-    .child {
-      background-color: rgba(173, 216, 230, 0.19);
-      padding: 10px;
-    }
-
-    .child * {
-      margin: 5px;
-    }
-    </style>
-    """
-    for i in sign_list:
-        body += f"""
-        <div class="child">
-            <div class="name"> 贴吧名称: { i['name'] }</div>
-            <div class="slogan"> 贴吧简介: { i['slogan'] }</div>
-        </div>
-        <hr>
-        """
-    msg = MIMEText(body, 'html', 'utf-8')
-    msg['subject'] = subject
-    smtp = smtplib.SMTP()
-    smtp.connect(HOST)
-    smtp.login(FROM, AUTH)
-    smtp.sendmail(FROM, TO, msg.as_string())
-    smtp.quit()
-
+def send_pusher(key, result):
+    pushdeer = PushDeer(pushkey=key)
+    pushdeer.send_text("贴吧签到", desp=result)
+    rerurn
+    
 def main():
     if ('BDUSS' not in ENV):
         logger.error("未配置BDUSS")
         return
     b = ENV['BDUSS'].split('#')
+        if ('PUSHKEY' not in ENV):
+        logger.error("未配置PUSHKEY")
+        return
     pushkey = ENV['PUSHKEY']
     for n, i in enumerate(b):
         logger.info("开始签到第" + str(n) + "个用户" + i)
         tbs = get_tbs(i)
         favorites = get_favorite(i)
         for j in favorites:
-            time.sleep(random.randint(1,5))
+            time.sleep(random.randint(1,4))
             client_sign(i, tbs, j["id"], j["name"])
         logger.info("完成第" + str(n) + "个用户签到")
     send_pusher(pushkey,"所有用户签到完成")
     logger.info("所有用户签到结束")
-
 
 if __name__ == '__main__':
     main()
