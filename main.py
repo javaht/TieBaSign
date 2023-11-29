@@ -182,6 +182,7 @@ def send_pusher(pukey, result):
 def send_pushers(key,result):
     headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.71 Safari/537.36'} 
     urltxt = "https://api2.pushdeer.com/message/push?pushkey={}&text={}".format(key,result)
+    logger.info("开始发送了："+urltxt)
     page = requests.get(url=urltxt, headers=headers)
     return "send_pusher操作结束"
     
