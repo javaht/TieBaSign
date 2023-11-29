@@ -184,9 +184,8 @@ def main():
         return
     b = ENV['BDUSS'].split('#')
     if ('PUSHKEY' not in ENV):
-    logger.error("未配置PUSHKEY")
-    return
-    
+        logger.error("未配置PUSHKEY")
+        return
     pushkey = ENV['PUSHKEY']
     logger.info("pushkey==="+ pushkey)
     # for n, i in enumerate(b):
