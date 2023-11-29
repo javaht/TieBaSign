@@ -204,9 +204,9 @@ def main():
     #         time.sleep(random.randint(1,4))
     #         client_sign(i, tbs, j["id"], j["name"])
     #     logger.info("完成第" + str(n) + "个用户签到")
-    logger.info("所有用户签到结束")
     send_pushers(pukey,"所有用户签到完成")
-
+    logger.info("所有用户签到结束")
+    
 if __name__ == '__main__':
     main()
     
