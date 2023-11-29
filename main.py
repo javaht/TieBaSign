@@ -174,6 +174,7 @@ def client_sign(bduss, tbs, fid, kw):
     return res
 
 def send_pusher(pukey, result):
+    logger.info(result+ "前边是result")
     pushdeer = PushDeer(pushkey=pukey)
     pushdeer.send_text("贴吧签到", desp=result)
     rerurn
