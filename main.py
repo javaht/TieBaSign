@@ -56,7 +56,6 @@ s = requests.Session()
 def send_pusher(key, result):
     pushdeer = PushDeer(pushkey=key)
     pushdeer.send_text("贴吧签到", desp=result)
-    return "成功"
 
 def get_tbs(bduss):
     logger.info("获取tbs开始")
