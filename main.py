@@ -173,18 +173,17 @@ def client_sign(bduss, tbs, fid, kw):
     res = s.post(url=SIGN_URL, data=data, timeout=5).json()
     return res
 
-def send_pusher(pukey, result):
-    logger.info(result+ "前边是result")
-    pushdeer = PushDeer(pushkey=pukey)
+def send_pusher(result):
+    pushdeer = PushDeer(pushkey="PDU2367T9CLgGEgmt9J0p9PHO8de9CEE9pCgFHbE")
     pushdeer.send_text("贴吧签到", desp=result)
     rerurn
     
-def send_pushers(key,result):
-    headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.71 Safari/537.36'} 
-    urltxt = "https://api2.pushdeer.com/message/push?pushkey=PDU2367T9CLgGEgmt9J0p9PHO8de9CEE9pCgFHbE&text={}".format(key,result)
-    logger.info("开始发送了："+urltxt)
-    page = requests.get(url=urltxt, headers=headers)
-    return "send_pusher操作结束"
+# def send_pushers(key,result):
+#     headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.71 Safari/537.36'} 
+#     urltxt = "https://api2.pushdeer.com/message/push?pushkey=PDU2367T9CLgGEgmt9J0p9PHO8de9CEE9pCgFHbE&text={}".format(key,result)
+#     logger.info("开始发送了："+urltxt)
+#     page = requests.get(url=urltxt, headers=headers)
+#     return "send_pusher操作结束"
     
     
 def main():
@@ -205,7 +204,7 @@ def main():
     #         time.sleep(random.randint(1,4))
     #         client_sign(i, tbs, j["id"], j["name"])
     #     logger.info("完成第" + str(n) + "个用户签到")
-    send_pushers(pukey,"所有用户签到完成")
+    send_pusher("所有用户签到完成")
     logger.info("所有用户签到结束")
     
 if __name__ == '__main__':
