@@ -179,6 +179,13 @@ def send_pusher(pukey, result):
     pushdeer.send_text("贴吧签到", desp=result)
     rerurn
     
+def send_pushers(key,result):
+    headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.71 Safari/537.36'} 
+    urltxt = "https://api2.pushdeer.com/message/push?pushkey={}&text={}".format(key,result)
+    page = requests.get(url=urltxt, headers=headers)
+    return "send_pusher操作结束"
+    
+    
 def main():
     if ('BDUSS' not in ENV):
         logger.error("未配置BDUSS")
@@ -198,7 +205,7 @@ def main():
     #         client_sign(i, tbs, j["id"], j["name"])
     #     logger.info("完成第" + str(n) + "个用户签到")
     logger.info("所有用户签到结束")
-    send_pusher(pukey,"所有用户签到完成")
+    send_pushers(pukey,"所有用户签到完成")
 
 if __name__ == '__main__':
     main()
