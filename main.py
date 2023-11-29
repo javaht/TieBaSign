@@ -183,18 +183,20 @@ def main():
         logger.error("未配置BDUSS")
         return
     b = ENV['BDUSS'].split('#')
-        if ('PUSHKEY' not in ENV):
-        logger.error("未配置PUSHKEY")
-        return
+    if ('PUSHKEY' not in ENV):
+    logger.error("未配置PUSHKEY")
+    return
+    
     pushkey = ENV['PUSHKEY']
-    for n, i in enumerate(b):
-        logger.info("开始签到第" + str(n) + "个用户" + i)
-        tbs = get_tbs(i)
-        favorites = get_favorite(i)
-        for j in favorites:
-            time.sleep(random.randint(1,4))
-            client_sign(i, tbs, j["id"], j["name"])
-        logger.info("完成第" + str(n) + "个用户签到")
+    logger.info("pushkey==="+ pushkey)
+    # for n, i in enumerate(b):
+    #     logger.info("开始签到第" + str(n) + "个用户" + i)
+    #     tbs = get_tbs(i)
+    #     favorites = get_favorite(i)
+    #     for j in favorites:
+    #         time.sleep(random.randint(1,4))
+    #         client_sign(i, tbs, j["id"], j["name"])
+    #     logger.info("完成第" + str(n) + "个用户签到")
     send_pusher(pushkey,"所有用户签到完成")
     logger.info("所有用户签到结束")
 
