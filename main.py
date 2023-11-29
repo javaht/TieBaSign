@@ -173,8 +173,8 @@ def client_sign(bduss, tbs, fid, kw):
     res = s.post(url=SIGN_URL, data=data, timeout=5).json()
     return res
 
-def send_pusher(key, result):
-    pushdeer = PushDeer(pushkey=key)
+def send_pusher(pukey, result):
+    pushdeer = PushDeer(pushkey=pukey)
     pushdeer.send_text("贴吧签到", desp=result)
     rerurn
     
@@ -186,8 +186,8 @@ def main():
     if ('PUSHKEY' not in ENV):
         logger.error("未配置PUSHKEY")
         return
-    pushkey = ENV['PUSHKEY']
-    logger.info("pushkey==="+ pushkey)
+    pukey = ENV['PUSHKEY']
+    logger.info("pukey==="+ pukey)
     # for n, i in enumerate(b):
     #     logger.info("开始签到第" + str(n) + "个用户" + i)
     #     tbs = get_tbs(i)
@@ -196,7 +196,7 @@ def main():
     #         time.sleep(random.randint(1,4))
     #         client_sign(i, tbs, j["id"], j["name"])
     #     logger.info("完成第" + str(n) + "个用户签到")
-    send_pusher(pushkey,"所有用户签到完成")
+    send_pusher(pukey,"所有用户签到完成")
     logger.info("所有用户签到结束")
 
 if __name__ == '__main__':
