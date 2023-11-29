@@ -176,15 +176,7 @@ def client_sign(bduss, tbs, fid, kw):
 def send_pusher(result):
     pushdeer = PushDeer(pushkey="PDU2367T9CLgGEgmt9J0p9PHO8de9CEE9pCgFHbE")
     pushdeer.send_text("贴吧签到", desp=result)
-    rerurn
-    
-# def send_pushers(key,result):
-#     headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.71 Safari/537.36'} 
-#     urltxt = "https://api2.pushdeer.com/message/push?pushkey=PDU2367T9CLgGEgmt9J0p9PHO8de9CEE9pCgFHbE&text={}".format(key,result)
-#     logger.info("开始发送了："+urltxt)
-#     page = requests.get(url=urltxt, headers=headers)
-#     return "send_pusher操作结束"
-    
+    return
     
 def main():
     if ('BDUSS' not in ENV):
