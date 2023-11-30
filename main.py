@@ -85,7 +85,7 @@ def get_favorite(bduss):
     }
     data = encodeData(data)
     try:
-        res = s.post(url=LIKIE_URL, data=data, timeout=5).json()
+        res = s.post(url=LIKIE_URL, data=data, timeout=4).json()
     except Exception as e:
         logger.error("获取关注的贴吧出错" + e)
         return []
