@@ -1,4 +1,5 @@
 # -*- coding:utf-8 -*-
+import datetime
 import os
 import requests
 import hashlib
@@ -177,9 +178,7 @@ def send_pusher(result):
     return
 
 def check_bduss_expiration():
-    # 获取当前时间戳
     current_time = time.time()
-    # 获取上次更新BDUSS的时间
     last_update_file = "last_update.txt"
     
     try:
@@ -187,7 +186,6 @@ def check_bduss_expiration():
             with open(last_update_file, 'r') as f:
                 last_update = float(f.read().strip())
         else:
-            # 如果文件不存在，创建文件并写入当前时间
             with open(last_update_file, 'w') as f:
                 f.write(str(current_time))
             last_update = current_time
@@ -196,7 +194,6 @@ def check_bduss_expiration():
         
         if days_passed >= 60:
             send_pusher("需要更新github的action了 请注意")
-            # 更新最后检查时间
             with open(last_update_file, 'w') as f:
                 f.write(str(current_time))
     except Exception as e:
@@ -217,9 +214,9 @@ def main():
             time.sleep(random.randint(1,4))
             client_sign(i, tbs, j["id"], j["name"])
         logger.info("完成第" + str(n) + "个用户签到")
-    send_pusher("所有用户签到完成")
+    current_time = datetime.now().strftime("%Y%m%d")
+    send_pusher(f"{current_time} 贴吧签到完成")
     logger.info("所有用户签到结束")
     
 if __name__ == '__main__':
     main()
-    
