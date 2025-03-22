@@ -175,12 +175,39 @@ def send_pusher(result):
     pushdeer = PushDeer(pushkey="PDU2367T9CLgGEgmt9J0p9PHO8de9CEE9pCgFHbE")
     pushdeer.send_text("贴吧签到", desp=result)
     return
+
+def check_bduss_expiration():
+    # 获取当前时间戳
+    current_time = time.time()
+    # 获取上次更新BDUSS的时间
+    last_update_file = "last_update.txt"
     
+    try:
+        if os.path.exists(last_update_file):
+            with open(last_update_file, 'r') as f:
+                last_update = float(f.read().strip())
+        else:
+            # 如果文件不存在，创建文件并写入当前时间
+            with open(last_update_file, 'w') as f:
+                f.write(str(current_time))
+            last_update = current_time
+        
+        days_passed = (current_time - last_update) / (24 * 3600)
+        
+        if days_passed >= 60:
+            send_pusher("需要更新github的action了 请注意")
+            # 更新最后检查时间
+            with open(last_update_file, 'w') as f:
+                f.write(str(current_time))
+    except Exception as e:
+        logger.error(f"检查BDUSS过期时间出错: {str(e)}")
+
 def main():
     if ('BDUSS' not in ENV):
         logger.error("未配置BDUSS")
         return
     b = ENV['BDUSS'].split('#')
+    check_bduss_expiration()
 
     for n, i in enumerate(b):
         logger.info("开始签到第" + str(n) + "个用户" + i)
