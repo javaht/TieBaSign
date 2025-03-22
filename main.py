@@ -177,46 +177,30 @@ def send_pusher(result):
     pushdeer.send_text("贴吧签到", desp=result)
     return
 
-def check_bduss_expiration():
-    current_time = time.time()
-    last_update_file = "last_update.txt"
-    
-    try:
-        if os.path.exists(last_update_file):
-            with open(last_update_file, 'r') as f:
-                last_update = float(f.read().strip())
-        else:
-            with open(last_update_file, 'w') as f:
-                f.write(str(current_time))
-            last_update = current_time
-        
-        days_passed = (current_time - last_update) / (24 * 3600)
-        
-        if days_passed >= 60:
-            send_pusher("需要更新github的action了 请注意")
-            with open(last_update_file, 'w') as f:
-                f.write(str(current_time))
-    except Exception as e:
-        logger.error(f"检查BDUSS过期时间出错: {str(e)}")
 
 def main():
     if ('BDUSS' not in ENV):
         logger.error("未配置BDUSS")
         return
     b = ENV['BDUSS'].split('#')
-    check_bduss_expiration()
 
-    for n, i in enumerate(b):
-        logger.info("开始签到第" + str(n) + "个用户" + i)
-        tbs = get_tbs(i)
-        favorites = get_favorite(i)
-        for j in favorites:
-            time.sleep(random.randint(1,4))
-            client_sign(i, tbs, j["id"], j["name"])
-        logger.info("完成第" + str(n) + "个用户签到")
-    current_time = datetime.now().strftime("%Y%m%d")
-    send_pusher(f"{current_time} 贴吧签到完成")
-    logger.info("所有用户签到结束")
+    current_hour = datetime.datetime.now().hour
+    is_reminder = current_hour == 0 
+    if is_reminder:
+        reminder_msg = "提醒：请检查github是否需要更新！"
+        send_pusher(reminder_msg)
+    else:
+        for n, i in enumerate(b):
+            logger.info("开始签到第" + str(n) + "个用户" + i)
+            tbs = get_tbs(i)
+            favorites = get_favorite(i)
+            for j in favorites:
+                time.sleep(random.randint(1,4))
+                client_sign(i, tbs, j["id"], j["name"])
+            logger.info("完成第" + str(n) + "个用户签到")
+        current_time = datetime.now().strftime("%Y%m%d")
+        send_pusher(f"{current_time} 贴吧签到完成")
+        logger.info("所有用户签到结束")
     
 if __name__ == '__main__':
     main()
