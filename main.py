@@ -195,7 +195,7 @@ def main():
             tbs = get_tbs(i)
             favorites = get_favorite(i)
             for j in favorites:
-                time.sleep(random.randint(1,4))
+                time.sleep(random.randint(0,1))
                 client_sign(i, tbs, j["id"], j["name"])
             logger.info("完成第" + str(n) + "个用户签到")
         current_time = datetime.now().strftime("%Y%m%d")
