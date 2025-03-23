@@ -184,7 +184,7 @@ def main():
         return
     b = ENV['BDUSS'].split('#')
 
-    current_hour = datetime.datetime.now().hour
+    current_hour = datetime.now().hour
     is_reminder = current_hour == 0 
     if is_reminder:
         reminder_msg = "提醒：请检查github是否需要更新！"
