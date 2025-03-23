@@ -1,5 +1,5 @@
 # -*- coding:utf-8 -*-
-import datetime
+from datetime import datetime
 import os
 import requests
 import hashlib
