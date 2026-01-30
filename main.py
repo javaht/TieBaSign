@@ -221,7 +221,6 @@ def main():
                 client_sign(i, tbs, j["id"], j["name"])
             logger.info("完成第" + str(n) + "个用户签到")
         current_time = datetime.now().strftime("%Y%m%d")
-        send_pusher(f"{current_time} 贴吧签到完成")
         logger.info("所有用户签到结束")
     
 if __name__ == '__main__':
