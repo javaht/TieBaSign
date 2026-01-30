@@ -7,7 +7,6 @@ import time
 import copy
 import logging
 import random
-from pypushdeer import PushDeer
 import smtplib
 
 
@@ -172,10 +171,33 @@ def client_sign(bduss, tbs, fid, kw):
     res = s.post(url=SIGN_URL, data=data, timeout=5).json()
     return res
 
-def send_pusher(result):
-    pushdeer = PushDeer(pushkey="PDU2367T9CLgGEgmt9J0p9PHO8de9CEE9pCgFHbE")
-    pushdeer.send_text("贴吧签到", desp=result)
-    return
+def send_dingtalk_message(message):
+    """
+    发送钉钉群消息
+    
+    Args:
+        message: 要发送的消息内容
+    """
+    webhook_url = "https://oapi.dingtalk.com/robot/send?access_token=6b3a354854dbafe9587485b840b27c9f88642ef3fdd8ceb8a91c4f816c7a6c76"
+    if not webhook_url:
+        print("未配置钉钉Webhook地址，跳过消息发送")
+        return
+    
+    data = {
+        "msgtype": "text",
+        "text": {
+            "content": message
+        }
+    }
+    
+    try:
+        response = requests.post(webhook_url, json=data)
+        if response.json().get("errcode") == 0:
+            print("钉钉消息发送成功")
+        else:
+            print(f"钉钉消息发送失败: {response.text}")
+    except Exception as e:
+        print(f"钉钉消息发送异常: {str(e)}")
 
 
 def main():
@@ -188,7 +210,7 @@ def main():
     is_reminder = current_hour == 0 
     if is_reminder:
         reminder_msg = "提醒：请检查github是否需要更新！"
-        send_pusher(reminder_msg)
+        send_dingtalk_message(f"百度贴吧签到失败，原因: Cookie 可能过期，请及时更新")
     else:
         for n, i in enumerate(b):
             logger.info("开始签到第" + str(n) + "个用户" + i)
