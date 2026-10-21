@@ -3,9 +3,9 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:   # 增加手动一键运行按钮，方便调试排查
   schedule:
-    - cron: '5 16,22 * * *'
-    - cron: '0 0 */59 * *'
+    - cron: '5 16,22 * * *'  # 每天 UTC 16:05 和 22:05 (对应北京时间 00:05 和 06:05)
 jobs:
   tieba_sign:
     runs-on: ubuntu-latest
